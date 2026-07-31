@@ -91,7 +91,7 @@
                             <i data-lucide="wallet" class="w-5 h-5 text-white"></i>
                         </div>
                         <div>
-                            <span class="font-extrabold text-lg text-white tracking-wide">ExpensePulse</span>
+                            <span class="font-extrabold text-lg text-white tracking-wide">WalletWatch</span>
                             <span class="text-xs block text-cyan-400 font-semibold tracking-wider uppercase">Smart Tracker</span>
                         </div>
                     </a>
