@@ -9,25 +9,52 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-box {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .clay-card {
+            background: #1e293b;
+            box-shadow: 12px 12px 30px rgba(0, 0, 0, 0.6), -6px -6px 20px rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2rem;
+        }
+        .clay-inset {
+            background: #0f172a;
+            box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.6), inset -3px -3px 8px rgba(255, 255, 255, 0.03);
+            border-radius: 1.25rem;
+        }
+        .clay-btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+            box-shadow: 6px 8px 20px rgba(99, 102, 241, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border-radius: 1.25rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .clay-btn-primary:hover {
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 8px 12px 26px rgba(99, 102, 241, 0.55);
+        }
+        .clay-btn-primary:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.6);
         }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-    <div class="w-full max-w-md glass-box rounded-3xl p-8 shadow-2xl z-10 relative">
+    <!-- Ambient Soft Glows -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="w-full max-w-md clay-card p-8 z-10 relative">
         <div class="text-center mb-8">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/30">
-                <i data-lucide="user-plus" class="w-7 h-7 text-white"></i>
+            <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-indigo-500 to-cyan-500 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-indigo-500/30 border border-white/20">
+                <i data-lucide="user-plus" class="w-8 h-8 text-white"></i>
             </div>
             <h1 class="text-2xl font-extrabold text-white">Create Account</h1>
-            <p class="text-xs text-slate-400 mt-1">Start tracking expenses & optimizing spending habits</p>
+            <p class="text-xs text-slate-400 mt-1 font-medium">Start tracking expenses & optimizing spending habits</p>
         </div>
 
         @if($errors->any())
-        <div class="mb-6 bg-rose-500/10 border border-rose-500/30 text-rose-400 p-3.5 rounded-xl text-xs">
+        <div class="mb-6 bg-rose-500/10 border border-rose-500/30 text-rose-400 p-3.5 rounded-2xl text-xs font-semibold">
             {{ $errors->first() }}
         </div>
         @endif
@@ -36,28 +63,28 @@
             @csrf
             <div>
                 <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name *</label>
-                <input type="text" name="name" required placeholder="John Doe" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500">
+                <input type="text" name="name" required placeholder="John Doe" class="w-full clay-inset py-3 px-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none">
             </div>
 
             <div>
                 <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address *</label>
-                <input type="email" name="email" required placeholder="john@example.com" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500">
+                <input type="email" name="email" required placeholder="john@example.com" class="w-full clay-inset py-3 px-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none">
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Password *</label>
-                    <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+                    <input type="password" name="password" required placeholder="••••••••" class="w-full clay-inset py-3 px-4 text-sm text-slate-100 focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Confirm Password *</label>
-                    <input type="password" name="password_confirmation" required placeholder="••••••••" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+                    <input type="password" name="password_confirmation" required placeholder="••••••••" class="w-full clay-inset py-3 px-4 text-sm text-slate-100 focus:outline-none">
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs font-semibold text-slate-300 mb-1">Preferred Currency Symbol</label>
-                <select name="currency_symbol" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+                <select name="currency_symbol" class="w-full clay-inset py-3 px-4 text-sm text-slate-100 focus:outline-none">
                     <option value="₹">₹ (INR)</option>
                     <option value="$">$ (USD)</option>
                     <option value="€">€ (EUR)</option>
@@ -66,13 +93,13 @@
                 </select>
             </div>
 
-            <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-cyan-500/25 transition">
+            <button type="submit" class="w-full py-3.5 px-4 clay-btn-primary font-extrabold text-sm mt-2">
                 Create Account
             </button>
         </form>
 
         <div class="mt-6 pt-6 border-t border-slate-800 text-center text-xs text-slate-400">
-            Already have an account? <a href="{{ route('login') }}" class="text-cyan-400 font-bold hover:underline">Sign In</a>
+            Already have an account? <a href="{{ route('login') }}" class="text-indigo-400 font-extrabold hover:underline">Sign In</a>
         </div>
     </div>
 

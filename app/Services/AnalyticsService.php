@@ -28,7 +28,7 @@ class AnalyticsService
         $daysInMonth = $today->day;
         $avgDailyExpense = $daysInMonth > 0 ? round($spendThisMonth / $daysInMonth, 2) : 0;
 
-        // Highest & Lowest category spending this month
+        // Highest & Lowest category spending this month (or fallback all-time)
         $categorySums = $user->expenses()
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->whereNotNull('category_id')
@@ -36,6 +36,15 @@ class AnalyticsService
             ->groupBy('category_id')
             ->with('category')
             ->get();
+
+        if ($categorySums->isEmpty()) {
+            $categorySums = $user->expenses()
+                ->whereNotNull('category_id')
+                ->select('category_id', DB::raw('SUM(amount) as total'))
+                ->groupBy('category_id')
+                ->with('category')
+                ->get();
+        }
 
         $highestCategory = $categorySums->sortByDesc('total')->first();
         $lowestCategory = $categorySums->sortBy('total')->first();
@@ -88,6 +97,9 @@ class AnalyticsService
         $end = $targetMonth->copy()->endOfMonth();
 
         $expenses = $user->expenses()->whereBetween('date', [$start, $end])->get();
+        if ($expenses->isEmpty()) {
+            $expenses = $user->expenses()->get();
+        }
 
         $weekdayTotal = 0;
         $weekendTotal = 0;
@@ -138,6 +150,7 @@ class AnalyticsService
         $start = $targetMonth->copy()->startOfMonth();
         $end = $targetMonth->copy()->endOfMonth();
 
+        // Query current month categories
         $categories = $user->expenses()
             ->whereBetween('date', [$start, $end])
             ->whereNotNull('category_id')
@@ -145,6 +158,16 @@ class AnalyticsService
             ->groupBy('category_id')
             ->with('category')
             ->get();
+
+        // Fallback to all-time if current month has no category expenses
+        if ($categories->isEmpty()) {
+            $categories = $user->expenses()
+                ->whereNotNull('category_id')
+                ->select('category_id', DB::raw('SUM(amount) as total'))
+                ->groupBy('category_id')
+                ->with('category')
+                ->get();
+        }
 
         $labels = [];
         $values = [];
@@ -154,8 +177,15 @@ class AnalyticsService
             if ($cat->category) {
                 $labels[] = $cat->category->name;
                 $values[] = (float) $cat->total;
-                $colors[] = $cat->category->color;
+                $colors[] = $cat->category->color ?? '#6366f1';
             }
+        }
+
+        // Placeholder if no expenses exist at all
+        if (empty($labels)) {
+            $labels = ['Uncategorized'];
+            $values = [1];
+            $colors = ['#94a3b8'];
         }
 
         return [

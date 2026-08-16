@@ -3,71 +3,75 @@
 @section('content')
 <div class="space-y-8">
     <!-- Header Title -->
-    <div>
-        <h1 class="text-2xl font-extrabold text-white flex items-center gap-2">
-            <i data-lucide="apple" class="w-7 h-7 text-emerald-400"></i>
-            <span>Food & Lifestyle Intelligence</span>
-        </h1>
-        <p class="text-xs text-slate-400 mt-1">Deep analysis of eating habits, healthy choices vs junk food spending ratios.</p>
+    <div class="clay-card p-6 md:p-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-3">
+                <div class="p-2.5 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 clay-badge">
+                    <i data-lucide="apple" class="w-6 h-6"></i>
+                </div>
+                <span>Food & Lifestyle Intelligence</span>
+            </h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Deep analysis of eating habits, healthy choices vs junk food spending ratios.</p>
+        </div>
     </div>
 
     <!-- Key Metrics Cards Row -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div class="glass-card p-5 rounded-3xl border border-slate-800">
-            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Food Spend</div>
-            <div class="text-2xl font-extrabold text-white mt-1">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="clay-card p-6 space-y-3">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Total Food Spend</span>
+            <div class="text-2xl font-black text-slate-900 dark:text-white">
                 {{ auth()->user()->currency_symbol }}{{ number_format($analytics['total_food_spent'], 2) }}
             </div>
-            <p class="text-xs text-slate-400 mt-2">Current Month Total</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Current Month Total</p>
         </div>
 
-        <div class="glass-card p-5 rounded-3xl border border-emerald-500/30 bg-emerald-950/10">
-            <div class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Healthy Food Spend</div>
-            <div class="text-2xl font-extrabold text-emerald-400 mt-1">
+        <div class="clay-card p-6 space-y-3 border-l-4 border-l-emerald-500">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-500">Healthy Food Spend</span>
+            <div class="text-2xl font-black text-emerald-500 dark:text-emerald-400">
                 {{ auth()->user()->currency_symbol }}{{ number_format($analytics['healthy_spent'], 2) }}
             </div>
-            <p class="text-xs text-emerald-400 font-bold mt-2">{{ $analytics['healthy_percent'] }}% of food budget</p>
+            <p class="text-xs text-emerald-500 font-bold">{{ $analytics['healthy_percent'] }}% of food budget</p>
         </div>
 
-        <div class="glass-card p-5 rounded-3xl border border-rose-500/30 bg-rose-950/10">
-            <div class="text-xs font-semibold text-rose-400 uppercase tracking-wider">Junk / Fast Food Spend</div>
-            <div class="text-2xl font-extrabold text-rose-400 mt-1">
+        <div class="clay-card p-6 space-y-3 border-l-4 border-l-rose-500">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-rose-500">Junk / Fast Food Spend</span>
+            <div class="text-2xl font-black text-rose-500 dark:text-rose-400">
                 {{ auth()->user()->currency_symbol }}{{ number_format($analytics['junk_spent'], 2) }}
             </div>
-            <p class="text-xs text-rose-400 font-bold mt-2">{{ $analytics['junk_percent'] }}% of food budget</p>
+            <p class="text-xs text-rose-500 font-bold">{{ $analytics['junk_percent'] }}% of food budget</p>
         </div>
 
-        <div class="glass-card p-5 rounded-3xl border border-cyan-500/30">
-            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lifestyle Health Score</div>
-            <div class="text-2xl font-extrabold text-cyan-400 mt-1">
+        <div class="clay-card p-6 space-y-3">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Lifestyle Health Score</span>
+            <div class="text-2xl font-black text-indigo-500 dark:text-indigo-400">
                 {{ $analytics['healthy_percent'] >= 60 ? 'A (Healthy)' : ($analytics['healthy_percent'] >= 40 ? 'B (Moderate)' : 'C (Needs Work)') }}
             </div>
-            <p class="text-xs text-slate-400 mt-2">Based on food ratios</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Based on food ratios</p>
         </div>
     </div>
 
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Subcategory Breakdown -->
-        <div class="glass-card p-6 rounded-3xl border border-slate-800">
-            <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
-                <i data-lucide="pie-chart" class="w-5 h-5 text-emerald-400"></i>
+        <div class="clay-card p-6 space-y-4">
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i data-lucide="pie-chart" class="w-5 h-5 text-emerald-500"></i>
                 <span>Subcategory Spend Breakdown</span>
             </h3>
             <div class="space-y-3">
                 @foreach($analytics['subcategory_breakdown'] as $subName => $amount)
-                <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
-                    <span class="text-xs font-bold text-slate-200">{{ $subName }}</span>
-                    <span class="text-sm font-extrabold text-emerald-400">{{ auth()->user()->currency_symbol }}{{ number_format($amount, 2) }}</span>
+                <div class="p-4 rounded-2xl clay-inset flex items-center justify-between">
+                    <span class="text-xs font-extrabold text-slate-800 dark:text-slate-200">{{ $subName }}</span>
+                    <span class="text-sm font-black text-emerald-500 dark:text-emerald-400">{{ auth()->user()->currency_symbol }}{{ number_format($amount, 2) }}</span>
                 </div>
                 @endforeach
             </div>
         </div>
 
         <!-- Weekly Food Analysis -->
-        <div class="glass-card p-6 rounded-3xl border border-slate-800">
-            <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
-                <i data-lucide="bar-chart-2" class="w-5 h-5 text-cyan-400"></i>
+        <div class="clay-card p-6 space-y-4">
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i data-lucide="bar-chart-2" class="w-5 h-5 text-cyan-500"></i>
                 <span>Weekly Food Progression</span>
             </h3>
             <div class="h-64">
@@ -77,43 +81,33 @@
     </div>
 
     <!-- Food Expenses Table -->
-    <div class="glass-card rounded-3xl border border-slate-800 overflow-hidden">
-        <div class="p-6 border-b border-slate-800">
-            <h3 class="text-base font-bold text-white">Food Transaction Logs</h3>
+    <div class="clay-card overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800">
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Food Transaction Logs</h3>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-                <thead class="bg-slate-950/60 text-slate-400 uppercase font-semibold border-b border-slate-800">
-                    <tr>
-                        <th class="px-6 py-4">Title</th>
-                        <th class="px-6 py-4">Subcategory</th>
-                        <th class="px-6 py-4">Date</th>
-                        <th class="px-6 py-4">Classification</th>
-                        <th class="px-6 py-4 text-right">Amount</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800/80">
-                    @forelse($foodExpenses as $exp)
-                    <tr class="hover:bg-slate-800/40 transition">
-                        <td class="px-6 py-4 font-bold text-white">{{ $exp->title }}</td>
-                        <td class="px-6 py-4 text-slate-300">{{ $exp->foodSubcategory ? $exp->foodSubcategory->name : 'General Food' }}</td>
-                        <td class="px-6 py-4 text-slate-400">{{ \Carbon\Carbon::parse($exp->date)->format('M d, Y') }}</td>
-                        <td class="px-6 py-4">
-                            <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold {{ $exp->is_healthy ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30' }}">
-                                {{ $exp->is_healthy ? '🥗 Healthy' : '🍔 Fast Food' }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right font-extrabold text-white text-sm">
-                            {{ auth()->user()->currency_symbol }}{{ number_format($exp->amount, 2) }}
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-slate-500">No food expenses recorded for this month.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+        <div class="divide-y divide-slate-200 dark:divide-slate-800/80">
+            @forelse($foodExpenses as $exp)
+            <div class="p-5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                <div class="space-y-1">
+                    <div class="font-extrabold text-slate-900 dark:text-white text-sm">{{ $exp->title }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                        <span>{{ $exp->foodSubcategory ? $exp->foodSubcategory->name : 'General Food' }}</span>
+                        <span>•</span>
+                        <span>{{ \Carbon\Carbon::parse($exp->date)->format('M d, Y') }}</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-3 py-1 rounded-xl text-[10px] font-extrabold {{ $exp->is_healthy ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-500 border border-rose-500/20' }}">
+                        {{ $exp->is_healthy ? '🥗 Healthy' : '🍔 Fast Food' }}
+                    </span>
+                    <span class="text-base font-black text-slate-900 dark:text-white">
+                        {{ auth()->user()->currency_symbol }}{{ number_format($exp->amount, 2) }}
+                    </span>
+                </div>
+            </div>
+            @empty
+            <div class="p-8 text-center text-slate-400 text-xs">No food expenses recorded for this month.</div>
+            @endforelse
         </div>
     </div>
 </div>
@@ -122,6 +116,10 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+        const tickColor = isDark ? '#94a3b8' : '#64748b';
+
         const weeklyData = {!! json_encode($analytics['weekly_food_analysis']) !!};
         const ctx = document.getElementById('weeklyFoodChart').getContext('2d');
         new Chart(ctx, {
@@ -132,7 +130,7 @@
                     label: 'Weekly Food Spend ({{ auth()->user()->currency_symbol }})',
                     data: Object.values(weeklyData),
                     backgroundColor: '#10b981',
-                    borderRadius: 10
+                    borderRadius: 14
                 }]
             },
             options: {
@@ -140,8 +138,8 @@
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
-                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+                    x: { grid: { display: false }, ticks: { color: tickColor, font: { family: 'Plus Jakarta Sans', weight: '600' } } },
+                    y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'Plus Jakarta Sans', weight: '600' } } }
                 }
             }
         });
